@@ -1,0 +1,12 @@
+[package]
+name = "traianus"
+version = "0.1.0"
+authors = ["Matthijs Kok"]
+edition = "2021"
+description = "Converts Roman numerals to Arabic numerals and vice versa."
+readme = "README.md"
+repository = "https://github.com/MatthijsKok/traianus"
+license = "MIT OR Apache-2.0"
+keywords = ["numerals", "roman", "arabic", "conversion", "formatting"]
+
+[dependencies]
