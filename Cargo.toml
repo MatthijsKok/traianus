@@ -1,6 +1,6 @@
 [package]
 name = "traianus"
-version = "0.1.0"
+version = "0.0.1"
 authors = ["Matthijs Kok"]
 edition = "2021"
 description = "Converts Roman numerals to Arabic numerals and vice versa."
