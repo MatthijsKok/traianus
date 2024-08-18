@@ -16,7 +16,7 @@ pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError> {
     if input.is_empty() {
         return Ok(0);
     }
-    return Err(NumeralError::Unimplemented);
+    Err(NumeralError::Unimplemented)
 }
 
 #[cfg(test)]
