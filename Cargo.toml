@@ -1,6 +1,6 @@
 [package]
 name = "traianus"
-version = "0.0.2"
+version = "0.0.3"
 authors = ["Matthijs Kok"]
 edition = "2021"
 rust-version = "1.61.0"
