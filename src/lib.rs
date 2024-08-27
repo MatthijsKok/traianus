@@ -183,18 +183,8 @@ mod tests {
     use super::*;
 
     #[test]
-    fn parse_roman_numeral_empty() {
-        let result = parse_roman_numeral("");
-        assert_eq!(result, Ok(0));
-    }
-
-    #[test]
-    fn parse_roman_numeral_one() {
-        assert_eq!(parse_roman_numeral("I"), Ok(1));
-    }
-
-    #[test]
     fn parse_roman_numeral_small() {
+        assert_eq!(parse_roman_numeral(""), Ok(0));
         assert_eq!(parse_roman_numeral("I"), Ok(1));
         assert_eq!(parse_roman_numeral("II"), Ok(2));
         assert_eq!(parse_roman_numeral("III"), Ok(3));
@@ -221,15 +211,7 @@ mod tests {
     }
 
     #[test]
-    fn parse_roman_numeral_invalid_character() {
-        assert_eq!(
-            parse_roman_numeral("XIZI"),
-            Err(NumeralError::InvalidCharacter('Z'))
-        );
-    }
-
-    #[test]
-    fn parse_roman_numeral_incorrect_repetition() {
+    fn parse_roman_numeral_invalid_numeral() {
         let invalid_numerals = vec![
             "IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM", "IC", "IL", "VX", "LC", "DM", "IIX",
             "VVX", "XM", "IIIIX", "IM", "IIV", "VX", "XXC",
@@ -240,5 +222,13 @@ mod tests {
                 Err(NumeralError::InvalidNumeral(numeral))
             );
         }
+    }
+
+    #[test]
+    fn parse_roman_numeral_invalid_character() {
+        assert_eq!(
+            parse_roman_numeral("XIZI"),
+            Err(NumeralError::InvalidCharacter('Z'))
+        );
     }
 }
