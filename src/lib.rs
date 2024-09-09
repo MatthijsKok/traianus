@@ -76,15 +76,21 @@ pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError<'_>> {
             }
             'V' => {
                 // TODO did this if block get _completely_ obsoleted by the 'V' in the match block down?
-                // if result % 10 >= 5 {
-                //     return Err(NumeralError::InvalidNumeral(input));
-                // }
+                // Nope! It catches invalid test case "IXV"
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
                 if let Some('V' | 'X' | 'L' | 'C' | 'D' | 'M') = chars.peek() {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
                 result += 5;
             }
             'X' => {
+                // TODO does this if block catch invalid case "IXX"? Yes!
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
                 if result % 50 >= 30 {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
@@ -116,16 +122,32 @@ pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError<'_>> {
                 }
             }
             'L' => {
+                // TODO does this if block catch invalid case "IXL"? Yes!
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
                 // TODO did this if block get _completely_ obsoleted by the 'L' in the match block down?
-                // if result % 100 >= 50 {
-                //     return Err(NumeralError::InvalidNumeral(input));
-                // }
+                // Nope! It catches invalid test case "IXV"
+                if result % 100 >= 50 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
                 if let Some('L' | 'C' | 'D' | 'M') = chars.peek() {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
                 result += 50;
             }
             'C' => {
+                // TODO does this if block catch invalid case "IXC"? Yes!
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
+                // TODO does this if block catch invalid case "XCC"? Yes!
+                if result % 100 >= 50 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
                 if result % 500 >= 300 {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
@@ -154,16 +176,42 @@ pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError<'_>> {
                 }
             }
             'D' => {
+                // TODO does this if block catch invalid case "IXD"? Yes!
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
+                // TODO does this if block catch invalid case "XCD"? Yes!
+                if result % 100 >= 50 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
                 // TODO did this if block get _completely_ obsoleted by the 'D' in the match block down?
-                // if result % 1000 >= 500 {
-                //     return Err(NumeralError::InvalidNumeral(input));
-                // }
+                // Nope! It catches invalid test case "CMD"
+                if result % 1000 >= 500 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
                 if let Some('D' | 'M') = chars.peek() {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
                 result += 500;
             }
             'M' => {
+                // TODO does this if block catch invalid case "IXM"? Yes!
+                if result % 10 >= 5 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
+                // TODO does this if block catch invalid case "XCM"? Yes!
+                if result % 100 >= 50 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
+                // TODO does this if block catch invalid case "CMM"? Yes!
+                if result % 1000 >= 500 {
+                    return Err(NumeralError::InvalidNumeral(input));
+                }
+
                 if result % 5000 >= 3000 {
                     return Err(NumeralError::InvalidNumeral(input));
                 }
@@ -213,8 +261,11 @@ mod tests {
     #[test]
     fn parse_roman_numeral_invalid_numeral() {
         let invalid_numerals = vec![
-            "IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM", "IC", "IL", "VX", "LC", "DM", "IIX",
-            "VVX", "XM", "IIIIX", "IM", "IIV", "VX", "XXC",
+            "IIII", "VV", "XXXX", "LL", "CCCC", "DD", "MMMM", "IC", "IL", "VX", "LC", "DM", "IIV",
+            "IIX", "VVX", "XM", "IIIIX", "IM", "IIV", "VX", "XXC", "IVI", "IXI", "IXV", "IXX",
+            "IXL", "IXC", "IXD", "IXM", "XIL", "XIC", "XID", "XIM", "XIVI", "XIXI", "XIXV", "XIXX",
+            "XIXL", "XIXC", "XLX", "XCX", "XCL", "XCC", "XCD", "XCM", "CXD", "CXM", "CMD", "CMM",
+            "CCM", "CCD",
         ];
         for numeral in invalid_numerals {
             assert_eq!(
