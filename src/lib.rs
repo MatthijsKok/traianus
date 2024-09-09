@@ -1,3 +1,11 @@
+//! # Traianus
+//!
+//! `traianus` is a library to convert roman numerals to arabis numerals and vice versa.
+//!
+
+#![forbid(unsafe_code)]
+// #![warn(missing_docs)]
+
 use thiserror::Error;
 
 #[derive(Error, Debug, PartialEq)]
