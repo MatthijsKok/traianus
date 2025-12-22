@@ -1,6 +1,6 @@
 //! # Traianus
 //!
-//! `traianus` is a library to convert roman numerals to arabis numerals and vice versa.
+//! `traianus` is a library to convert roman numerals to arabic numerals and vice versa.
 //!
 
 #![forbid(unsafe_code)]
@@ -8,7 +8,7 @@
 
 use thiserror::Error;
 
-#[derive(Error, Debug, PartialEq)]
+#[derive(Error, Debug, PartialEq, Eq)]
 pub enum NumeralError<'a> {
     #[error("Invalid character: {0}")]
     InvalidCharacter(char),
@@ -16,9 +16,10 @@ pub enum NumeralError<'a> {
     InvalidNumeral(&'a str),
 }
 
-/// Parse a Roman numeral string into a u64.
+/// Parse a Roman numeral string into an unsigned integer.
 ///
 /// See the Wikipedia page on [Roman numerals](https://en.wikipedia.org/wiki/Roman_numerals) for more information.
+/// All roman numerals fall in the range 0..4000, so a u16 is adequate.
 ///
 /// # Examples
 ///
@@ -27,15 +28,10 @@ pub enum NumeralError<'a> {
 ///
 /// assert_eq!(parse_roman_numeral("MMXXIV"), Ok(2024));
 /// ```
-pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError<'_>> {
-    let valid_chars = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
-    for c in input.chars() {
-        if !valid_chars.contains(&c) {
-            return Err(NumeralError::InvalidCharacter(c));
-        }
-    }
+pub fn parse_roman_numeral(input: &str) -> Result<u16, NumeralError<'_>> {
+    check_invalid_characters(input)?;
 
-    let mut result: u64 = 0;
+    let mut result: u16 = 0;
     // let mut result: i64 = 0; // Result is i64 to allow for subtraction at the beginning of the numeral.
 
     let mut chars = input.chars().peekable();
@@ -232,6 +228,16 @@ pub fn parse_roman_numeral(input: &str) -> Result<u64, NumeralError<'_>> {
     }
 
     Ok(result)
+}
+
+fn check_invalid_characters(input: &str) -> Result<(), NumeralError<'_>> {
+    let valid_chars = ['I', 'V', 'X', 'L', 'C', 'D', 'M'];
+    for c in input.chars() {
+        if !valid_chars.contains(&c) {
+            return Err(NumeralError::InvalidCharacter(c));
+        }
+    }
+    Ok(())
 }
 
 #[cfg(test)]
